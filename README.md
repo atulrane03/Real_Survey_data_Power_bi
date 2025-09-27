@@ -58,32 +58,7 @@ A full end-to-end analytics project built in **Power BI Desktop** using a **real
   - `DimRole` (normalized job titles)  
   - `DimCountry` (standardized country names/regions)  
   - `DimTools` (language/tool preferences exploded/one-hot or bridge)  
-  - (Optional) `Bridge_RespondentTool` for many-to-many respondent↔tool relationships
 
-**Relationships:**  
-- `SurveyResponses[JobTitleKey]` → `DimRole[JobTitleKey]` (1:* )  
-- `SurveyResponses[CountryKey]` → `DimCountry[CountryKey]` (1:* )  
-- `SurveyResponses[RespondentID]` ↔ `Bridge_RespondentTool[RespondentID]` (1:* )  
-- `Bridge_RespondentTool[ToolKey]` → `DimTools[ToolKey]` ( *:1 )
 
----
 
-## 🧮 Sample DAX (Measures)
 
-> Adjust column/table names to your model.
-
-```DAX
-Total Respondents :=
-DISTINCTCOUNT ( SurveyResponses[RespondentID] )
-
-Avg Salary :=
-AVERAGE ( SurveyResponses[AnnualSalary] )
-
-Avg Happiness - WorkLife :=
-AVERAGE ( SurveyResponses[Happiness_WorkLife] )
-
-Avg Happiness - Salary :=
-AVERAGE ( SurveyResponses[Happiness_Salary] )
-
-Respondents by Role :=
-CALCULATE ( [Total Respondents], ALLEXCEPT ( DimRole, DimRole[JobTitle] ) )
